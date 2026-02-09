@@ -20,7 +20,7 @@ create table User(
     password VARCHAR(50) not null,
     security_question VARCHAR(50) not null,
     security_answer VARCHAR(50) not null,
-    role enum("admin","tech_admin","user") default "user"
+    role enum('admin','tech_admin','user') default 'user'
 ) engine='InnoDB';
 
 -- 1. ADMIN (Anubhav)
@@ -46,8 +46,8 @@ values("rohit@gmail.com", "Rohit", 9876543213, "2000-01-01", "Pass@123", "Where 
 -- ==========================================
 create table Movie(
     movie_name varchar(50) primary key,
-    language enum("English","Hindi","Kannada","Tamil","Telugu","Malayalam") not null,
-    category enum("Comedy","Action","Horror") not null,
+    language enum('English','Hindi','Kannada','Tamil','Telugu','Malayalam') not null,
+    category enum('Comedy','Action','Horror') not null,
     release_date date not null
 ) engine=innodb;
 
@@ -70,7 +70,7 @@ insert into Movie (movie_name,language,category,release_date) values("Drishyam 3
 create table Theater(
     theater_name varchar(50) primary key,
     owner_email varchar(50) not null,
-    show_time varchar(50) default "10AM to 1PM,2PM to 5PM,6PM to 9PM" not null,
+    show_time varchar(50) default '10AM to 1PM,2PM to 5PM,6PM to 9PM' not null,
     seat_capacity integer not null, 
     price_per_ticket float not null,
     foreign key(owner_email) references User(email_address)
@@ -123,7 +123,7 @@ create table Booking(
     time_of_booking varchar(30) not null,
     no_of_tickets_required integer not null,
     total_amount float not null default 0.0,
-    status enum("Booked","Cancelled") not null,
+    status enum( 'Booked' ,'Cancelled') not null,
     foreign key (email_address) references User(email_address), 
     foreign key(movie_name) references Movie(movie_name),
     foreign key(theater_name) references Theater(theater_name)
@@ -146,4 +146,3 @@ values ("manu@gmail.com", "Stree 3", "Miraj Cinemas", "2026-02-01", "10AM to 1PM
 insert into Booking (email_address,movie_name,theater_name,date_of_booking,time_of_booking,no_of_tickets_required,total_amount,status) 
 values ("rohit@gmail.com", "Deadpool 3", "IMAX Orbit", "2026-02-14", "6PM to 9PM", 2, 1200, "Booked");
 
-select * from User;
