@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Box-Office | Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="{{url_for('static', filename='auth.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='login.css')}}">
+</head>
+<body>
+    <body>
+    <script>
+        // Check local storage immediately
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+        }
+    </script>
+    <header class="header">
+        <div class="header-content">
+            <a href="{{url_for('index')}}" style="text-decoration: none;">
+                <div class="logo">BoxOffice</div>
+            </a>
+            
+            <button id="theme-toggle" class="toggle-btn" aria-label="Switch Theme">
+                <span class="icon sun">☀️</span>
+                <span class="icon moon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="main-container">
+        
+        <div class="auth-card">
+            
+            <div class="flash-wrapper">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="flash-msg alert-{{ category }}" style="margin-bottom: 15px;">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+
+            <h2 class="auth-title">Enter Credentials</h2>
+
+            <form action="{{url_for('auth.login')}}" method="POST" id="login-form">
+                
+               <div class="form-group">
+    <label for="role" class="form-label">Select Role</label>
+    <div class="input-icon-wrapper">
+        <i class="fas fa-user-tag input-icon"></i>
+        <select name="role" id="role" class="form-control" required> 
+            <option value="select" selected disabled>-- Select Role --</option>
+            <option value="admin">Admin</option>
+            <option value="user">Customer</option>
+            <option value="tech_admin">TechAdmin</option>
+        </select>
+    </div>
+</div>
+        
+                <div class="form-group">
+                    <label for="uname" class="form-label">Username</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="email" name="uname" id="uname" class="form-control" 
+                               pattern="^[a-zA-Z0-9]+@[a-z]+\.[a-z]+$" 
+                               placeholder="Enter your email" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" name="password" id="password" class="form-control"
+                               pattern="(?=.*[A-Z])(?=.*[a-z])(?=.*[\d])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{4,}" 
+                               placeholder="Enter your password" required>
+                    </div>
+                </div>
+
+                <div class="btn-group-vertical">
+                    <button type="submit" class="btn btn-primary full-width">Login</button>
+                    <button type="reset" class="btn btn-outline full-width" id="resetbtn">Reset</button>
+                </div>
+
+                <div id="pw-link-container" style="display: none; margin-top: 20px;">
+                    <a href="{{url_for('auth.change_password')}}" id="change-pw-link" class="auth-link">
+                        Change Password?
+                    </a>
+                </div>
+
+            </form>  
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 BoxOffice. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // 1. Theme Toggle Logic
+       const toggleBtn = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        // We only need to listen for clicks now
+        toggleBtn.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+
+            // Save the new choice
+            if (body.classList.contains('light-mode')) {
+                localStorage.setItem('theme', 'light');
+            } else {
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // 2. Your Existing Login Logic (Preserved)
+        const roleSelect = document.getElementById('role');
+        const pwContainer = document.getElementById('pw-link-container');
+        const loginform = document.getElementById('login-form');
+
+        // Logic: Hide 'changepassword' if role is admin
+        function updateVisibility(){
+            if (roleSelect.value === 'user' || roleSelect.value === 'tech_admin' ){
+                pwContainer.style.display = 'block';
+            } else { 
+                pwContainer.style.display = 'none'; 
+            }
+        }
+
+        roleSelect.addEventListener('change', updateVisibility);
+        
+        // Ensure link visibility updates on reset
+        loginform.addEventListener('reset', function(){
+            setTimeout(()=>{ updateVisibility() }, 10);
+        });
+    </script>
+</body>
+</html>

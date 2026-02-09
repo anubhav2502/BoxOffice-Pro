@@ -1,0 +1,113 @@
+/* --- SIGNUP PAGE SPECIFIC STYLES --- */
+
+/* 1. MAIN CARD SIZING */
+.signup-card {
+    width: 100%;
+    max-width: 800px; /* Wider to accommodate 2 columns comfortable */
+    padding: 30px 40px;
+    margin: auto; /* Centers vertically if using flex on body */
+}
+
+/* 2. GRID LAYOUT FOR THE FORM */
+/* This targets the form directly to create the 2-column structure */
+.signup-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    column-gap: 25px; /* Space between the left and right inputs */
+    row-gap: 15px;    /* Space between rows */
+}
+
+/* 3. HANDLING FULL-WIDTH ELEMENTS */
+/* These elements should stretch across both columns */
+.signup-form .form-group.full-width-group,
+.btn-container {
+    grid-column: span 2; /* Spans across both columns */
+}
+
+/* 4. COMPACTING FORM GROUPS */
+.form-group {
+    margin-bottom: 0; /* Remove bottom margin since grid handles row-gap */
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.form-label {
+    font-size: 0.85rem;
+    margin-bottom: 5px;
+    color: var(--text-sub);
+    font-weight: 500;
+}
+
+/* 5. INPUT ICONS & STYLING */
+.input-icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.input-icon {
+    position: absolute;
+    left: 15px;
+    font-size: 1rem;
+    color: var(--text-sub);
+    pointer-events: none;
+    z-index: 2;
+    transition: color 0.3s ease;
+}
+
+/* Override auth.css padding to make room for icon */
+.form-control {
+    padding: 10px 15px 10px 45px !important;
+    font-size: 0.95rem;
+    height: 45px; /* Fixed height for consistency */
+}
+
+/* Icon Highlight on Focus */
+.form-control:focus + .input-icon,
+.input-icon-wrapper:focus-within .input-icon {
+    color: var(--accent);
+}
+
+/* 6. BUTTONS */
+.btn-container {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+    justify-content: center;
+}
+
+.full-width {
+    width: 100%;
+    text-align: center;
+}
+
+/* 7. DROPDOWN VISIBILITY FIX */
+select option {
+    background-color: #16213e; 
+    color: #ffffff;
+}
+
+body.light-mode select option {
+    background-color: #ffffff;
+    color: #333333;
+}
+
+/* 8. RESPONSIVE: STACK ON MOBILE */
+@media (max-width: 768px) {
+    .signup-form {
+        grid-template-columns: 1fr; /* Switch to 1 column */
+        gap: 15px;
+    }
+    
+    .signup-card {
+        padding: 20px;
+        max-width: 100%;
+    }
+    
+    .signup-form .form-group.full-width-group,
+    .btn-container {
+        grid-column: span 1; /* Reset span */
+    }
+}

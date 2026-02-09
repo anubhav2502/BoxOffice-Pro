@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Box-Office | Register</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="{{url_for('static', filename='auth.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='signup.css')}}">
+</head>
+<body>
+    <script>
+        // Check local storage immediately
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+        }
+    </script>
+
+    <header class="header">
+        <div class="header-content">
+            <a href="{{url_for('index')}}" style="text-decoration: none;">
+                <div class="logo">BoxOffice</div>
+            </a>
+            
+            <button id="theme-toggle" class="toggle-btn" aria-label="Switch Theme">
+                <span class="icon sun">☀️</span>
+                <span class="icon moon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="main-container">
+        
+        <div class="auth-card signup-card">
+            <h2 class="auth-title">Create Account</h2>
+            
+            <div class="flash-wrapper">
+                {% with messages = get_flashed_messages(with_categories = true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="flash-msg {{'alert-success' if category == 'success' else 'alert-error'}}" style="margin-bottom: 15px;">
+                                {{message}}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith%}
+            </div>
+            
+            <form action="{{url_for('auth.signup')}}" method="POST" class="signup-form">
+                
+                <div class="form-group">
+                    <label class="form-label">User Name</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" name="username" class="form-control" 
+                               pattern="[a-zA-Z]{2,20}" title="Alphabets, 2 to 20 Characters" required placeholder="John Doe">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" name="email" class="form-control" 
+                               pattern="^[a-zA-Z0-9]+@[a-z]+\.[a-z]+$" required placeholder="john@example.com">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Mobile Number</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fas fa-phone input-icon"></i>
+                        <input type="text" name="mobile" class="form-control" 
+                               pattern="^[0-9]{10}$" required placeholder="9876543210">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Date of Birth</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fas fa-calendar-alt input-icon"></i>
+                        <input type="date" name="dob" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" name="password" class="form-control" 
+                               pattern="(?=.*[A-Z])(?=.*[a-z])(?=.*[\d])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}" 
+                               title="Min 8 chars, 1 Uppercase, 1 Digit, 1 Special Char" required placeholder="********">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Confirm Password</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" name="confirm_password" class="form-control" 
+                               required placeholder="********">
+                    </div>
+                </div>
+
+                <div class="form-group full-width-group">
+                    <label class="form-label">Security Question</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fas fa-question-circle input-icon"></i>
+                        <select name="security_question" class="form-control" required>
+                            <option value="select" selected disabled>-- Select Question --</option>
+                            <option value="q1">Which is your favorite book?</option>
+                            <option value="q2">What was the name of your favorite pet?</option>
+                            <option value="q3">What is your favorite food?</option>
+                            <option value="q4">What city were you born in?</option>
+                            <option value="q5">Where is your favorite place to vacation?</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group full-width-group">
+                    <label class="form-label">Security Answer</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fas fa-key input-icon"></i>
+                        <input type="text" name="security_answer" class="form-control" 
+                               pattern="[a-zA-Z]{1,20}" required placeholder="Your answer">
+                    </div>
+                </div>
+
+                <div class="btn-container">
+                    <button type="submit" class="btn btn-primary full-width">Sign Up</button>
+                    <a href="{{url_for('auth.login')}}" class="btn btn-outline full-width">Login</a>
+                </div>
+            </form>
+            
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 BoxOffice. All rights reserved.</p>
+    </footer>
+
+    <script>
+       const toggleBtn = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        // We only need to listen for clicks now
+        toggleBtn.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+
+            // Save the new choice
+            if (body.classList.contains('light-mode')) {
+                localStorage.setItem('theme', 'light');
+            } else {
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+    </script>
+</body>
+</html>

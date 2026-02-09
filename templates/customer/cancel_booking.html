@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block header_title %}Cancel Booking{% endblock %}
+
+{% block sidebar %}
+    <li><a href="{{url_for('customer.customer_home')}}"><i class="fas fa-home"></i> Dashboard</a></li>
+    <li><a href="{{url_for('customer.book_ticket')}}"><i class="fas fa-ticket-alt"></i> Book Tickets</a></li>
+    <li><a href="{{url_for('customer.cancel_booking')}}" class="active"><i class="fas fa-ban"></i> Cancel Booking</a></li>
+    <div style="border-top: 1px solid var(--border-color); margin: 10px 15px;"></div>
+    <li><a href="{{url_for('customer.history')}}"><i class="fas fa-history"></i> Booking History</a></li>
+{% endblock %}
+
+{% block content %}
+    
+    <div style="max-width: 1200px; margin: 0 auto;">
+        
+        <h2 class="page-title">Cancel Booking</h2>
+        <p style="color: var(--text-sub); margin-bottom: 25px;">
+            Select a booking below to cancel it. 
+            <span style="color: #e74c3c; font-weight: bold; font-size: 0.9rem;">
+                <i class="fas fa-exclamation-triangle"></i> This action cannot be undone.
+            </span>
+        </p>
+
+        <form action="{{url_for('customer.cancel_booking')}}" method="POST">
+            
+            <div class="table-responsive" style="margin-bottom: 30px;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Select</th>
+                            <th>Booking ID</th>
+                            <th>Movie Details</th>
+                            <th>Theater</th>
+                            <th>Show Schedule</th>
+                            <th>Tickets</th>
+                            <th>Total Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if history_data %}
+                            {% for bhist in history_data %}
+                            <tr style="cursor: pointer;" onclick="document.getElementById('radio_{{bhist.booking_id}}').click();">
+                                <td style="text-align: center;">
+                                    <input type="radio" id="radio_{{bhist.booking_id}}" name="booking_id" 
+                                           value="{{bhist.booking_id}}"
+                                           style="transform: scale(1.5); cursor: pointer; accent-color: var(--accent);">
+                                </td>
+                                <td>#{{bhist.booking_id}}</td>
+                                <td>
+                                    <span style="font-weight: 600; color: var(--text-main); display: block;">{{bhist.movie_name}}</span>
+                                    <span style="font-size: 0.8rem; color: var(--text-sub);">
+                                        {{bhist.language}} | {{bhist.category}}
+                                    </span>
+                                </td>
+                                <td>{{bhist.theater_name}}</td>
+                                <td>
+                                    <div style="display: flex; flex-direction: column;">
+                                        <span><i class="far fa-calendar-alt"></i> {{bhist.date_of_booking}}</span>
+                                        <span style="color: var(--accent); font-size: 0.9rem;"><i class="far fa-clock"></i> {{bhist.time_of_booking}}</span>
+                                    </div>
+                                </td>
+                                <td style="text-align: center;">
+                                    <span style="background: rgba(255, 255, 255, 0.1); padding: 5px 10px; border-radius: 5px;">
+                                        {{bhist.no_of_tickets_required}}
+                                    </span>
+                                </td>
+                                <td style="font-weight: bold; color: var(--text-main);">₹{{bhist.total_amount}}</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="7" style="text-align: center; padding: 50px; color: var(--text-sub);">
+                                    <i class="fas fa-calendar-check" style="font-size: 3rem; margin-bottom: 15px; display: block; opacity: 0.5;"></i>
+                                    You have no active bookings to cancel.
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% if history_data %}
+            <div style="text-align: center; margin-top: 20px;">
+                <button type="submit" class="btn btn-danger" style="padding: 12px 40px; border-radius: 50px;"
+                        onclick="return confirm('Are you sure you want to cancel this booking? This cannot be undone.');">
+                    <i class="fas fa-times-circle"></i> Cancel Selected Booking
+                </button>
+            </div>
+            {% endif %}
+
+        </form>
+    </div>
+
+{% endblock %}

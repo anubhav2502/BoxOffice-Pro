@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block header_title %}My History{% endblock %}
+
+{% block sidebar %}
+    <li><a href="{{url_for('customer.customer_home')}}"><i class="fas fa-home"></i> Dashboard</a></li>
+    <li><a href="{{url_for('customer.book_ticket')}}"><i class="fas fa-ticket-alt"></i> Book Tickets</a></li>
+    <li><a href="{{url_for('customer.cancel_booking')}}"><i class="fas fa-ban"></i> Cancel Booking</a></li>
+    <div style="border-top: 1px solid var(--border-color); margin: 10px 15px;"></div>
+    <li><a href="{{url_for('customer.history')}}" class="active"><i class="fas fa-history"></i> Booking History</a></li>
+{% endblock %}
+
+{% block content %}
+    
+    <div style="max-width: 1200px; margin: 0 auto;">
+        
+        <h2 class="page-title">Booking History</h2>
+        <p style="color: var(--text-sub); margin-bottom: 25px;">View details of all your past and upcoming movie bookings.</p>
+
+        <div class="table-responsive" style="box-shadow: var(--shadow);">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Movie Details</th>
+                        <th>Theater</th>
+                        <th>Show Schedule</th>
+                        <th>Cost Breakdown</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if history_data %}
+                        {% for bhist in history_data %}
+                        <tr>
+                            <td style="color: var(--text-sub); font-size: 0.9rem;">#{{bhist.booking_id}}</td>
+                            
+                            <td>
+                                <span style="font-weight: 600; color: var(--text-main); display: block; font-size: 1rem;">
+                                    {{bhist.movie_name}}
+                                </span>
+                                <span style="font-size: 0.8rem; color: var(--text-sub); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px;">
+                                    {{bhist.language}} | {{bhist.category}}
+                                </span>
+                            </td>
+
+                            <td>{{bhist.theater_name}}</td>
+
+                            <td>
+                                <div style="display: flex; flex-direction: column;">
+                                    <span style="font-weight: 500;"><i class="far fa-calendar-alt"></i> {{bhist.date_of_booking}}</span>
+                                    <span style="color: var(--accent); font-size: 0.85rem;"><i class="far fa-clock"></i> {{bhist.time_of_booking}}</span>
+                                </div>
+                            </td>
+
+                            <td>
+                                <div style="font-size: 0.9rem;">
+                                    {{bhist.no_of_tickets_required}} Tickets x ₹{{bhist.price_per_ticket}}
+                                </div>
+                                <div style="font-weight: bold; color: var(--text-main); margin-top: 3px;">
+                                    Total: ₹{{bhist.total_amount}}
+                                </div>
+                            </td>
+
+                            <td>
+                                {% if bhist.status == 'Booked' or bhist.status == 'Confirmed' %}
+                                    <span style="background: rgba(46, 204, 113, 0.15); color: #2ecc71; padding: 5px 12px; border-radius: 50px; font-weight: 600; font-size: 0.85rem; border: 1px solid rgba(46, 204, 113, 0.3);">
+                                        <i class="fas fa-check-circle"></i> {{bhist.status}}
+                                    </span>
+                                {% else %}
+                                    <span style="background: rgba(231, 76, 60, 0.15); color: #e74c3c; padding: 5px 12px; border-radius: 50px; font-weight: 600; font-size: 0.85rem; border: 1px solid rgba(231, 76, 60, 0.3);">
+                                        <i class="fas fa-times-circle"></i> {{bhist.status}}
+                                    </span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 50px; color: var(--text-sub);">
+                                <i class="fas fa-history" style="font-size: 3rem; margin-bottom: 15px; display: block; opacity: 0.5;"></i>
+                                No booking history found.
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+
+{% endblock %}

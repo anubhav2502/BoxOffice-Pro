@@ -1,0 +1,88 @@
+==================================================
+        BOXOFFICE APP - NEW TEST DATA
+==================================================
+
+--------------------------------------------------
+1. LOGIN CREDENTIALS (Updated Roles)
+--------------------------------------------------
+[Role: Admin]
+Email:    anubhav@admin.com
+Password: Admin@123
+
+[Role: Tech Admin]
+Email:    prakhar@tech.com
+Password: Tech@123
+
+[Role: Customer]
+Email:    manu@gmail.com
+Password: User@123
+
+
+--------------------------------------------------
+2. ADMIN MODULE (Login as Anubhav)
+--------------------------------------------------
+
+[Action: Add Movie]
+-------------------
+Movie Name:   Singham Again
+Language:     Hindi
+Category:     Action
+Release Date: 2026-02-15
+
+[Action: Delete Movie]
+----------------------
+(Select movies from DB that are not yet scheduled)
+Target 1:     Leo
+Target 2:     Welcome 3
+
+[Action: Add Theater]
+---------------------
+Theater Name: Galaxy Multiplex
+Owner Email:  prakhar@tech.com
+Show Time:    10AM to 1PM, 2PM to 5PM, 6PM to 9PM
+Capacity:     150
+Price:        250.0
+
+
+--------------------------------------------------
+3. TECH ADMIN MODULE (Login as Prakhar)
+--------------------------------------------------
+
+[Action: Schedule Movie]
+------------------------
+Theater:    Cinepolis Nexus
+Movie:      Drishyam 3
+Start Date: 2026-02-10
+End Date:   2026-03-10
+
+[Action: Schedule Movie (Alt)]
+------------------------------
+Theater:    Galaxy Multiplex
+Movie:      Singham Again
+Start Date: 2026-02-16
+End Date:   2026-03-16
+
+
+--------------------------------------------------
+4. CUSTOMER MODULE (Login as Manu)
+--------------------------------------------------
+
+[Action: Book Ticket - Scenario 1]
+----------------------------------
+Movie:    War 2
+Theater:  PVR Phoenix
+Date:     2026-02-15
+Time:     10AM to 1PM
+Tickets:  3
+
+[Action: Book Ticket - Scenario 2]
+----------------------------------
+Movie:    Deadpool 3
+Theater:  IMAX Orbit
+Date:     2026-02-14
+Time:     6PM to 9PM
+Tickets:  2
+
+[Action: View History]
+----------------------
+Check for 'Active' status on the newly booked tickets.

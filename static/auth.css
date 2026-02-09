@@ -1,0 +1,462 @@
+/* --- 1. CSS VARIABLES --- */
+:root {
+    /* DARK MODE (Default) */
+    --bg-primary: #1a1a2e;
+    --bg-secondary: #16213e;
+    --bg-gradient: radial-gradient(circle at center, #1f4068 0%, #1a1a2e 70%);
+    --text-main: #ffffff;
+    --text-sub: #aeb8c3;
+    --accent: #e94560; 
+    --accent-hover: #c0354a;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --shadow: rgba(0, 0, 0, 0.3);
+}
+
+.light-mode {
+    /* LIGHT MODE */
+    --bg-primary: #f4f6f8;
+    --bg-secondary: #ffffff;
+    --bg-gradient: radial-gradient(circle at center, #ffffff 0%, #eef2f5 80%);
+    --text-main: #2d3436;
+    --text-sub: #636e72;
+    --accent: #0984e3; 
+    --accent-hover: #0769b5;
+    --border-color: rgba(0, 0, 0, 0.1);
+    --shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* --- 2. RESET & BASE --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+    /* CHANGED: Forces exact screen height to prevent scrolling */
+    height: 100vh; 
+    overflow: hidden; 
+    background-color: var(--bg-primary);
+    color: var(--text-main);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* --- 3. HEADER --- */
+.header {
+    background-color: var(--bg-secondary);
+    padding: 15px 40px; /* Reduced padding slightly */
+    box-shadow: 0 2px 10px var(--shadow);
+    transition: background-color 0.3s ease;
+    z-index: 100;
+    flex-shrink: 0; /* Prevents header from shrinking */
+}
+
+.header-content {
+    display: flex;
+    justify-content: center; /* Centers Logo */
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative; /* For absolute positioning of toggle */
+}
+
+/* LOGO & VIBRATION */
+.logo {
+    font-size: 40px; /* Slightly smaller to fit better */
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: 2px;
+    cursor: default;
+    transition: color 0.3s ease; 
+}
+
+.logo:hover {
+    animation: vibrate 0.3s linear infinite;
+    text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.2);
+}
+
+@keyframes vibrate {
+    0% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+    100% { transform: translate(0); }
+}
+
+/* TOGGLE BTN */
+.toggle-btn {
+    position: absolute;
+    right: 0;
+    background: transparent;
+    border: 2px solid var(--border-color);
+    border-radius: 50px;
+    cursor: pointer;
+    padding: 5px 15px;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.toggle-btn:hover {
+    transform: scale(1.1) ;
+    border-color: var(--accent);
+}
+
+.sun { display: none; }
+.moon { display: inline-block; }
+.light-mode .sun { display: inline-block; }
+.light-mode .moon { display: none; }
+
+/* --- 4. MAIN LAYOUT --- */
+.main-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: var(--bg-gradient);
+    transition: background 0.3s ease;
+    /* CHANGED: Allows internal scroll only if content is too big for screen */
+    overflow-y: auto; 
+}
+
+.hero-content {
+    text-align: center;
+    max-width: 700px;
+    width: 100%;
+}
+
+/* --- 5. ANIMATIONS --- */
+h1 {
+    font-size: 3rem; /* Adjusted for better fit */
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.highlight {
+    color: var(--accent);
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+.highlight:hover {
+    transform: scale(1.1);
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: var(--text-sub);
+    margin-bottom: 30px;
+}
+
+@keyframes zoomIn {
+    0% { transform: scale(0.9); opacity: 0; filter: blur(5px); }
+    100% { transform: scale(1); opacity: 1; filter: blur(0); }
+}
+
+@keyframes slideUp {
+    0% { transform: translateY(30px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+.animate-zoom {
+    animation: zoomIn 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.animate-slide-up {
+    opacity: 0;
+    animation: slideUp 0.8s ease-out forwards;
+}
+
+.delay-1 {
+    animation-delay: 0.4s;
+}
+
+/* --- 6. BUTTONS --- */
+.btn-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.btn {
+    text-decoration: none;
+    padding: 12px 40px;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Primary Button */
+.btn-primary {
+    background-color: var(--accent);
+    color: white;
+    border: 2px solid var(--accent);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-hover);
+    border-color: var(--accent-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+}
+
+/* Outline Button */
+.btn-outline {
+    background-color: transparent;
+    color: var(--text-main);
+    border: 2px solid var(--border-color);
+}
+
+.btn-outline:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-3px);
+}
+
+/* --- 7. FOOTER --- */
+.footer {
+    background-color: var(--bg-secondary);
+    padding: 15px; /* Reduced padding */
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-sub);
+    border-top: 1px solid var(--border-color);
+    transition: background-color 0.3s ease;
+    flex-shrink: 0; /* Prevents footer from shrinking */
+}
+
+/* --- 8. RESPONSIVE --- */
+@media (max-width: 600px) {
+    h1 { font-size: 2.5rem; }
+    .btn-container { flex-direction: column; }
+    .btn { width: 100%; text-align: center; }
+    .toggle-btn { position: static; }
+    .header-content { justify-content: space-between; }
+}
+
+/* --- NEW: DEVELOPER INFO SECTION --- */
+
+/* Delays the appearance slightly so it comes in last */
+.delay-2 {
+    animation-delay: 0.6s;
+}
+
+.developer-info {
+    /* CHANGED: Removed fixed large margin to prevent scroll */
+    margin-top: 150px; 
+    padding-top: 40px;
+    border-top: 1px solid var(--border-color); /* Subtle divider line */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.developer-info p {
+    font-size: 0.9rem;
+    color: var(--text-sub);
+    letter-spacing: 0.5px;
+}
+
+.dev-name {
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+/* Social Icons Container */
+.social-icons {
+    display: flex;
+    gap: 15px;
+}
+
+/* Individual Icon Styling */
+.social-link {
+    color: var(--text-sub);
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+/* Hover Effects */
+.social-link:hover {
+    color: var(--accent); /* Turns to your theme color (Red/Blue) */
+    transform: translateY(-3px) scale(1.1); /* Slight jump */
+}
+
+/* --- FORM & CARD STYLES (For Login/Signup) --- */
+
+/* The Container for the Form */
+.auth-card {
+    background-color: var(--bg-secondary);
+    /* CHANGED: Reduced padding/width to prevent scrolling on small screens */
+    padding: 30px; 
+    border-radius: 20px;
+    box-shadow: 0 10px 30px var(--shadow);
+    width: 100%;
+    max-width: 400px; 
+    border: 1px solid var(--border-color);
+    text-align: center;
+    margin: auto; /* Centers in flex container */
+    animation: zoomIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Form Title */
+.auth-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: var(--text-main);
+}
+
+/* Input Group wrapper */
+.form-group {
+    margin-bottom: 15px; /* Reduced gap */
+    text-align: left; 
+}
+
+/* Labels */
+.form-label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--text-sub);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* Input Fields */
+.form-control {
+    width: 100%;
+    padding: 10px 15px;
+    background-color: rgba(255, 255, 255, 0.05); 
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-main);
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    
+    /* Remove default ugly browser styles */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* Custom Dropdown Arrow */
+select.form-control {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23aeb8c3%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px top 50%;
+    background-size: 12px auto;
+    padding-right: 30px;
+}
+
+/* Input Focus State */
+.form-control:focus {
+    outline: none;
+    border-color: var(--accent);
+    background-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 10px rgba(233, 69, 96, 0.2);
+}
+
+/* Light Mode Specifics */
+.light-mode .form-control {
+    background-color: #ffffff;
+    border-color: #ccc;
+    color: #333;
+}
+.light-mode select.form-control option {
+    background-color: #ffffff;
+    color: #333;
+}
+
+/* Link Styling */
+.auth-link {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.auth-link:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+.auth-footer-text {
+    margin-top: 15px;
+    font-size: 0.85rem;
+    color: var(--text-sub);
+}
+
+/* --- FLASH MESSAGES (Error/Success Alerts) --- */
+
+.flash-wrapper {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.flash-msg {
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center;
+    border: 1px solid transparent;
+}
+
+/* ERROR MESSAGE (Red) */
+.alert-error {
+    background-color: rgba(255, 77, 77, 0.15); /* Transparent Red Background */
+    color: #ff4d4d; /* Bright Red Text */
+    border-color: rgba(255, 77, 77, 0.3);
+}
+
+/* SUCCESS MESSAGE (Green) */
+.alert-success {
+    background-color: rgba(46, 204, 113, 0.15); /* Transparent Green Background */
+    color: #2ecc71; /* Bright Green Text */
+    border-color: rgba(46, 204, 113, 0.3);
+}
+
+/* LIGHT MODE ADJUSTMENTS */
+/* In light mode, we make the background slightly darker so it's visible on white */
+.light-mode .alert-error {
+    background-color: #ffe6e6;
+    color: #cc0000;
+    border-color: #ffcccc;
+}
+
+.light-mode .alert-success {
+    background-color: #e8f8f5;
+    color: #006644;
+    border-color: #b3e6d5;
+}/* --- Add this to the very bottom of auth.css --- */
+
+.alert-error, .alert-danger {
+    color: #ff4d4d !important; /* Forces Red Text */
+    background-color: rgba(255, 77, 77, 0.1); /* Light red background */
+    border: 1px solid #ff4d4d;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    display: block;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Light Mode Fix */
+.light-mode .alert-error, .light-mode .alert-danger {
+    color: #b30000 !important;
+    background-color: #ffe6e6;
+    border-color: #ffcccc;
+}

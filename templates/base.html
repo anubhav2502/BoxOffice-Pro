@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Box-Office | Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+</head>
+<body>
+    
+    <script>
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+        }
+    </script>
+
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <div class="brand">BoxOffice</div>
+        </div>
+        
+        <ul class="sidebar-menu">
+            {% block sidebar %} {% endblock %}
+        </ul>
+    </nav>
+
+    <div class="main-wrapper">
+        
+        <header class="top-header">
+            <h3 style="font-weight: 600;">{% block header_title %}Dashboard{% endblock %}</h3>
+            
+            <div class="user-profile">
+                <span class="user-name">Hi, {{session.get('user_name', 'Admin')}}</span>
+                
+                <button id="theme-toggle" class="toggle-btn" aria-label="Switch Theme">
+                    <span class="icon sun">☀️</span>
+                    <span class="icon moon">🌙</span>
+                </button>
+
+                <a href="{{url_for('auth.logout')}}" class="logout-link" title="Logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </header>
+
+        <div class="content-container">
+            
+            {% with messages = get_flashed_messages(with_categories = true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="flash-msg {{'alert-success' if category == 'success' else 'alert-error'}}">
+                        {{message}}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith%}
+
+            <div class="dashboard-card">
+                {% block content %} {% endblock %}
+            </div>
+            
+        </div>
+        
+        <footer style="text-align: center; padding: 15px; color: var(--text-sub); font-size: 0.8rem; background-color: var(--bg-secondary); border-top: 1px solid var(--border-color);">
+            &copy; 2026 BoxOffice. All rights reserved.
+        </footer>
+        
+    </div>
+
+    <script>
+        const toggleBtn = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        toggleBtn.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            if (body.classList.contains('light-mode')) {
+                localStorage.setItem('theme', 'light');
+            } else {
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block header_title %}Schedule Management{% endblock %}
+
+{% block sidebar %}
+    <li><a href="{{url_for('tech_admin.tech_admin_home')}}"><i class="fas fa-home"></i> Dashboard</a></li>
+    <li><a href="{{url_for('tech_admin.schedule_movie')}}"><i class="fas fa-calendar-plus"></i> Schedule Movie</a></li>
+    <li><a href="{{url_for('tech_admin.delete_schedule')}}"><i class="fas fa-calendar-times"></i> Delete Schedule</a></li>
+    <div style="border-top: 1px solid var(--border-color); margin: 10px 15px;"></div>
+    <li><a href="{{url_for('tech_admin.view_schedule')}}" class="active"><i class="fas fa-calendar-alt"></i> View Schedule</a></li>
+{% endblock %}
+
+{% block content %}
+    
+    <div style="max-width: 1100px; margin: 0 auto;">
+        
+        <h2 class="page-title">View Schedules</h2>
+        
+        <div style="background-color: var(--bg-primary); padding: 20px; border-radius: 10px; margin-bottom: 25px; border: 1px solid var(--border-color);">
+            <form action="{{url_for('tech_admin.view_schedule')}}" method="POST" 
+                  style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; align-items: end;">
+                
+                <div>
+                    <label class="form-label" style="font-size: 0.85rem;">Movie Name</label>
+                    <select name="movie_name" class="form-control" style="padding: 8px;">
+                        <option value="select_movie" selected disabled>-- Select Movie --</option>
+                        {% for name in movie_names %}
+                            <option value="{{name.movie_name}}">{{name['movie_name']}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label class="form-label" style="font-size: 0.85rem;">Theater Name</label>
+                    <select name="theater_name" class="form-control" style="padding: 8px;">
+                        <option value="select_theater" selected disabled>-- Select Theater --</option>
+                        {% for name in theater_names %}
+                            <option value="{{name.theater_name}}">{{name['theater_name']}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label class="form-label" style="font-size: 0.85rem;">Start Date</label>
+                    <input type="date" name="start_date" class="form-control" style="padding: 8px;">
+                </div>
+
+                <div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 10px;">
+                        <i class="fas fa-filter"></i> Apply Filter
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Movie Name</th>
+                        <th>Theater Name</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if schedule_list %}
+                        {% for schedule in schedule_list %}
+                        <tr>
+                            <td style="font-weight: 600; color: var(--text-main);">{{schedule.movie_name}}</td>
+                            <td>{{schedule.theater_name}}</td>
+                            <td><i class="far fa-calendar-check" style="color: #2ecc71;"></i> {{schedule.start_date}}</td>
+                            <td><i class="far fa-calendar-times" style="color: #e74c3c;"></i> {{schedule.end_date}}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4" style="text-align: center; padding: 40px; color: var(--text-sub);">
+                                <i class="fas fa-search" style="font-size: 2rem; margin-bottom: 10px; display: block;"></i>
+                                No schedules found matching your criteria.
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+{% endblock %}

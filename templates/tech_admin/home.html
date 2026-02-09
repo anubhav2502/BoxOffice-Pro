@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block header_title %}Tech Admin Dashboard{% endblock %}
+
+{% block sidebar %}
+    <li><a href="{{url_for('tech_admin.tech_admin_home')}}" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+    <li><a href="{{url_for('tech_admin.schedule_movie')}}"><i class="fas fa-calendar-plus"></i> Schedule Movie</a></li>
+    <li><a href="{{url_for('tech_admin.delete_schedule')}}"><i class="fas fa-calendar-times"></i> Delete Schedule</a></li>
+    <div style="border-top: 1px solid var(--border-color); margin: 10px 15px;"></div>
+    <li><a href="{{url_for('tech_admin.view_schedule')}}"><i class="fas fa-calendar-alt"></i> View Schedule</a></li>
+{% endblock %}
+
+{% block content %}
+    <div style="text-align: center; padding: 40px 20px;">
+        
+        <h1 style="font-size: 2.5rem; margin-bottom: 10px;">Welcome Tech Admin!</h1>
+        <p style="color: var(--text-sub); font-size: 1.1rem; margin-bottom: 30px;">
+            Manage movie showtimes and theater schedules efficiently.
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top: 40px; max-width: 1000px; margin-left: auto; margin-right: auto;">
+            
+            <div style="background: var(--bg-primary); padding: 30px; border-radius: 15px; border: 1px solid var(--border-color); transition: transform 0.3s;" 
+                 onmouseover="this.style.transform='translateY(-5px)'" 
+                 onmouseout="this.style.transform='translateY(0)'">
+                
+                <i class="fas fa-calendar-plus" style="font-size: 2.5rem; color: var(--accent); margin-bottom: 15px;"></i>
+                <h3 style="margin-bottom: 5px;">Schedule Movie</h3>
+                <p style="color: var(--text-sub); font-size: 0.9rem;">Assign Movies to Theaters</p>
+                
+                <a href="{{url_for('tech_admin.schedule_movie')}}" class="btn" style="display: inline-block; margin-top: 15px; font-size: 0.8rem; padding: 10px 25px;">
+                    Create Schedule
+                </a>
+            </div>
+            
+            <div style="background: var(--bg-primary); padding: 30px; border-radius: 15px; border: 1px solid var(--border-color); transition: transform 0.3s;" 
+                 onmouseover="this.style.transform='translateY(-5px)'" 
+                 onmouseout="this.style.transform='translateY(0)'">
+                
+                <i class="fas fa-list-alt" style="font-size: 2.5rem; color: #2ecc71; margin-bottom: 15px;"></i>
+                <h3 style="margin-bottom: 5px;">View Schedules</h3>
+                <p style="color: var(--text-sub); font-size: 0.9rem;">Check Active Showtimes</p>
+                
+                <a href="{{url_for('tech_admin.view_schedule')}}" class="btn" style="display: inline-block; margin-top: 15px; font-size: 0.8rem; padding: 10px 25px; background-color: #27ae60;">
+                    View All
+                </a>
+            </div>
+
+            <div style="background: var(--bg-primary); padding: 30px; border-radius: 15px; border: 1px solid var(--border-color); transition: transform 0.3s;" 
+                 onmouseover="this.style.transform='translateY(-5px)'" 
+                 onmouseout="this.style.transform='translateY(0)'">
+                
+                <i class="fas fa-trash-alt" style="font-size: 2.5rem; color: #e74c3c; margin-bottom: 15px;"></i>
+                <h3 style="margin-bottom: 5px;">Remove Schedule</h3>
+                <p style="color: var(--text-sub); font-size: 0.9rem;">Cancel Showtimes</p>
+                
+                <a href="{{url_for('tech_admin.delete_schedule')}}" class="btn" style="display: inline-block; margin-top: 15px; font-size: 0.8rem; padding: 10px 25px; background-color: #c0392b;">
+                    Delete
+                </a>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

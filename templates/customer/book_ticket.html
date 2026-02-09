@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block header_title %}Book Tickets{% endblock %}
+
+{% block sidebar %}
+<li><a href="{{url_for('customer.customer_home')}}"><i class="fas fa-home"></i> Dashboard</a></li>
+<li><a href="{{url_for('customer.book_ticket')}}" class="active"><i class="fas fa-ticket-alt"></i> Book Tickets</a></li>
+<li><a href="{{url_for('customer.cancel_booking')}}"><i class="fas fa-ban"></i> Cancel Booking</a></li>
+<div style="border-top: 1px solid var(--border-color); margin: 10px 15px;"></div>
+<li><a href="{{url_for('customer.history')}}"><i class="fas fa-history"></i> Booking History</a></li>
+{% endblock %}
+
+{% block content %}
+
+<div style="max-width: 1100px; margin: 0 auto;">
+
+    <h2 class="page-title">Book Your Tickets</h2>
+    <p style="color: var(--text-sub); margin-bottom: 25px;">
+        Select a movie, date, and time to see real-time seat availability.
+    </p>
+
+    <form action="{{url_for('customer.book_ticket')}}" method="POST" id="bookingForm">
+
+        <div class="table-responsive" style="margin-bottom: 30px; max-height: 400px; overflow-y: auto;">
+            <table class="data-table">
+                <thead style="position: sticky; top: 0; z-index: 10;">
+                    <tr>
+                        <th>Select</th>
+                        <th>Movie</th>
+                        <th>Theater</th>
+                        <th>Language</th>
+                        <th>Category</th>
+                        <th>Available Seats</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if shows %}
+                    {% for show in shows %}
+                    <tr style="cursor: pointer;" onclick="document.getElementById('radio_{{loop.index}}').click();">
+                        <td style="text-align: center;">
+                            <input type="radio" id="radio_{{loop.index}}" name="selected_show"
+                                value="{{show.movie_name}}|{{show.theater_name}}|{{show.seat_capacity}}|{{show.price_per_ticket}}"
+                                style="transform: scale(1.5); cursor: pointer; accent-color: var(--accent);" {% if
+                                selected_movie_details.selected_show==show.movie_name ~ '|' ~ show.theater_name ~ '|' ~
+                                show.seat_capacity ~ '|' ~ show.price_per_ticket %} checked {% endif %} /* KEY CHANGE:
+                                Reloads only if Date & Time are also picked */ onchange="checkAndSubmit()">
+                        </td>
+                        <td style="font-weight: 600; color: var(--text-main);">{{show.movie_name}}</td>
+                        <td>{{show.theater_name}}</td>
+                        <td>{{show.language}}</td>
+                        <td>
+                            <span
+                                style="font-size: 0.8rem; padding: 3px 8px; border-radius: 4px; background: rgba(255, 255, 255, 0.1);">
+                                {{show.category}}
+                            </span>
+                        </td>
+                        <td>
+                            {% set seat_count = show.update_seat_capacity|int %}
+
+                            {% if seat_count > 20 %}<span style="color: #2ecc71; font-weight: bold; font-size: 1.1rem;">
+                                {% else %}
+                                <span style="color: #e74c3c; font-weight: bold; font-size: 1.1rem;">
+                                    {% endif %}
+
+                                    {{ seat_count }}
+                                </span></td>
+                        <td style="color: var(--accent); font-weight: bold;">₹{{show.price_per_ticket}}</td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 40px; color: var(--text-sub);">
+                            <i class="fas fa-film" style="font-size: 2rem; margin-bottom: 10px; display: block;"></i>
+                            No shows available.
+                        </td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <div
+            style="background-color: var(--bg-primary); padding: 30px; border-radius: 15px; border: 1px solid var(--border-color); box-shadow: var(--shadow);">
+            <h3
+                style="margin-bottom: 20px; font-size: 1.2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; color: var(--text-main);">
+                Booking Details
+            </h3>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 25px;">
+
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">Date of Booking</label>
+                    <input type="date" name="booking_date" id="booking_date" class="form-control" min="{{min_date}}"
+                        max="{{max_date}}" required value="{{selected_movie_details.booking_date or ''}}"
+                        onchange="checkAndSubmit()">
+                    <small style="color: var(--text-sub); font-size: 0.75rem;">(Max 3 days in advance)</small>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">Show Time</label>
+                    <select name="booking_time" id="booking_time" class="form-control" required
+                        onchange="checkAndSubmit()">
+                        <option value="" disabled {% if not selected_movie_details.booking_time %}selected{% endif %}>--
+                            Select Time --</option>
+                        <option value="10AM to 1PM" {% if selected_movie_details.booking_time=="10AM to 1PM" %} selected
+                            {% endif %}>10:00 AM - 01:00 PM</option>
+                        <option value="2PM to 5PM" {% if selected_movie_details.booking_time=="2PM to 5PM" %} selected
+                            {% endif %}>02:00 PM - 05:00 PM</option>
+                        <option value="6PM to 9PM" {% if selected_movie_details.booking_time=="6PM to 9PM" %} selected
+                            {% endif %}>06:00 PM - 09:00 PM</option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">Number of Tickets</label>
+                    <input type="number" name="no_of_tickets" class="form-control" min="1" max="10"
+                        title="Max 10 tickets allowed" required placeholder="1"
+                        value="{{selected_movie_details.no_of_tickets if selected_movie_details.no_of_tickets else ''}}">
+                </div>
+
+            </div>
+
+            <div style="margin-top: 30px; text-align: center;">
+                <button type="submit" name="book_btn" class="btn btn-primary"
+                    style="padding: 12px 50px; font-size: 1.1rem; border-radius: 50px;">
+                    <i class="fas fa-check-circle"></i> Confirm Booking
+                </button>
+            </div>
+
+        </div>
+
+    </form>
+</div>
+
+<script>
+    function checkAndSubmit() {
+        const date = document.getElementById('booking_date').value;
+        const time = document.getElementById('booking_time').value;
+        // Get selected radio button
+        const show = document.querySelector('input[name="selected_show"]:checked');
+
+        // Only reload if Movie, Date, AND Time are all selected
+        if (date && time && show) {
+            document.getElementById('bookingForm').submit();
+        }
+    }
+</script>
+
+{% endblock %}

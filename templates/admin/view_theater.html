@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block header_title %}Theaters Management{% endblock %}
+
+{% block sidebar %}
+    <li><a href="{{url_for('admin.admin_home')}}"><i class="fas fa-home"></i> Dashboard</a></li>
+    <li><a href="{{url_for('admin.add_movie')}}"><i class="fas fa-film"></i> Add Movie</a></li>
+    <li><a href="{{url_for('admin.delete_movie')}}"><i class="fas fa-trash-alt"></i> Delete Movie</a></li>
+    <li><a href="{{url_for('admin.view_movie')}}"><i class="fas fa-list"></i> View Movies</a></li>
+    <div style="border-top: 1px solid var(--border-color); margin: 10px 15px;"></div>
+    <li><a href="{{url_for('admin.add_theater')}}"><i class="fas fa-building"></i> Add Theater</a></li>
+    <li><a href="{{url_for('admin.view_theater')}}" class="active"><i class="fas fa-map-marker-alt"></i> View Theaters</a></li>
+{% endblock %}
+
+{% block content %}
+    
+    <div style="max-width: 1000px; margin: 0 auto;">
+        
+        <h2 class="page-title">View Theaters</h2>
+
+        <div style="background-color: var(--bg-primary); padding: 20px; border-radius: 10px; margin-bottom: 25px; border: 1px solid var(--border-color);">
+            <form action="{{url_for('admin.view_theater')}}" method="POST" 
+                  style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; align-items: end;">
+                
+                <div>
+                    <label class="form-label" style="font-size: 0.85rem;">Theater Name</label>
+                    <select name="theater_name" class="form-control" style="padding: 8px;">
+                        <option value="select_theater" selected disabled>-- Select Theater --</option>
+                        {% for name in theater_names %}
+                            <option value="{{name['theater_name']}}">{{name['theater_name']}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label class="form-label" style="font-size: 0.85rem;">Owner Email</label>
+                    <input type="email" name="owner_email" class="form-control" 
+                           pattern="^[a-zA-Z0-9]+@[a-z]+\.[a-z]+$" 
+                           placeholder="Search by email..." style="padding: 8px;"> 
+                </div>
+
+                <div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 10px;">
+                        <i class="fas fa-filter"></i> Apply Filter
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Theater Name</th>
+                        <th>Owner Email</th>
+                        <th>Capacity</th>
+                        <th>Price (₹)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if theaters %}
+                        {% for theater in theaters %}
+                        <tr>
+                            <td style="font-weight: 600; color: var(--text-main);">{{theater.theater_name}}</td>
+                            <td>{{theater.owner_email}}</td>
+                            <td>
+                                <span style="background: rgba(46, 204, 113, 0.1); color: #2ecc71; padding: 4px 10px; border-radius: 5px; font-size: 0.8rem;">
+                                    <i class="fas fa-chair"></i> {{theater.seat_capacity}}
+                                </span>
+                            </td>
+                            <td>₹ {{theater.price_per_ticket}}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4" style="text-align: center; padding: 40px; color: var(--text-sub);">
+                                <i class="fas fa-search" style="font-size: 2rem; margin-bottom: 10px; display: block;"></i>
+                                No theaters found matching your criteria.
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+{% endblock %}

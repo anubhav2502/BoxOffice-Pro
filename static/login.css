@@ -1,0 +1,104 @@
+/* --- LOGIN PAGE COMPACT STYLES --- */
+
+.auth-card {
+    width: 100%;
+    max-width: 380px; /* Made slightly narrower */
+    background-color: var(--bg-secondary);
+    padding: 25px 30px; /* Reduced padding to save vertical space */
+    border-radius: 15px;
+    box-shadow: 0 10px 30px var(--shadow);
+    border: 1px solid var(--border-color);
+    text-align: center;
+    /* Animation */
+    animation: zoomIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.auth-title {
+    font-size: 1.6rem; /* Slightly smaller title */
+    font-weight: 700;
+    margin-bottom: 20px; /* Less space below title */
+    color: var(--text-main);
+}
+
+/* COMPACT FORM GROUPS */
+.form-group {
+    margin-bottom: 15px; /* Reduced space between inputs */
+    text-align: left;
+}
+
+.form-label {
+    margin-bottom: 5px;
+    font-size: 0.85rem;
+}
+
+/* INPUT & SELECT STYLING */
+.form-control {
+    width: 100%;
+    padding: 10px 15px 10px 40px !important; /* Compact padding */
+    font-size: 0.95rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-main);
+    transition: all 0.3s ease;
+    
+    /* Remove default ugly styling */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* Icon Positioning */
+.input-icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 12px;
+    font-size: 1rem;
+    color: var(--text-sub);
+    pointer-events: none;
+}
+
+/* BUTTONS */
+.btn-group-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Reduced gap */
+    margin-top: 20px;
+}
+
+.full-width {
+    width: 100%;
+    padding: 10px; /* Compact button */
+    font-size: 1rem;
+    border-radius: 50px;
+}
+
+/* Footer Link (Change Password) */
+#pw-link-container {
+    margin-top: 15px;
+}
+
+.auth-link {
+    font-size: 0.85rem;
+}
+
+/* --- DROPDOWN VISIBILITY FIX --- */
+
+/* 1. Force Dark Background on Options (for Dark Mode) */
+select option {
+    background-color: #16213e; /* Matches your Dark Theme */
+    color: #ffffff;
+}
+
+/* 2. Force Light Background on Options (for Light Mode) */
+/* We use 'body.light-mode' to override the default */
+body.light-mode select option {
+    background-color: #ffffff;
+    color: #333333;
+}
+

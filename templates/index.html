@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Box-Office | Welcome</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="{{url_for('static', filename='auth.css')}}">
+</head>
+<body>
+    <script>
+        // Check local storage immediately
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+        }
+    </script>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">BoxOffice</div>
+            <button id="theme-toggle" class="toggle-btn" aria-label="Switch Theme">
+                <span class="icon sun">☀️</span>
+                <span class="icon moon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div class="hero-content">
+            <h1 class="animate-zoom">Welcome to <span class="highlight">BoxOffice</span></h1>
+            <p class="subtitle animate-slide-up">Your portal to the best entertainment experience.</p>
+            
+            <div class="btn-container animate-slide-up delay-1">
+                <a href="{{url_for('auth.login')}}" class="btn btn-primary">Login</a>
+                <a href="{{url_for('auth.signup')}}" class="btn btn-outline">Signup</a>
+            </div>
+
+            <div class="developer-info animate-slide-up delay-2">
+                <p>Developed by <span class="dev-name">Anubhav Sharma</span></p>
+                <div class="social-icons">
+                    <a href="https://github.com/anubhav2502" target="_blank" class="social-link" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:anubhavsharmamun@gmail.com" class="social-link" title="Email">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/anubhav-sharma-3bb706236/" target="_blank" class="social-link" title="LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 BoxOffice. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const toggleBtn = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        // We only need to listen for clicks now
+        toggleBtn.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+
+            // Save the new choice
+            if (body.classList.contains('light-mode')) {
+                localStorage.setItem('theme', 'light');
+            } else {
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+    </script>
+</body>
+</html>
